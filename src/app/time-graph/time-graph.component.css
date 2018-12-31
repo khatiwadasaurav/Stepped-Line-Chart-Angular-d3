@@ -1,0 +1,29 @@
+/* .mySvg{
+  background-color: cadetblue;
+}
+.big{
+  font-size: 24px;
+}
+.rectangleCss{
+  fill: rgb(255, 0, 0);
+  stroke-width: 3px;
+}
+.circleCss{
+  fill: yellow;
+  stroke: 1px black
+} */
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2px;
+}
+
+.grid line {
+  stroke: lightgrey;
+  stroke-opacity: 0.7;
+  shape-rendering: crispEdges;
+}
+
+.grid path {
+  stroke-width: 0;
+}
