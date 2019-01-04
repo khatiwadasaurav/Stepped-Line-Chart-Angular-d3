@@ -1,7 +1,7 @@
 # TimeGraphLog
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.1.
-This project helps understanding d3 and generating data from a set of Arrays and graph is generated using the time duration intervals.
+This project helps understanding d3 and generating data from a set of Arrays and graph is generated using the time duration intervals.This is an angular 6 module so you can start using it exporting the component.
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
