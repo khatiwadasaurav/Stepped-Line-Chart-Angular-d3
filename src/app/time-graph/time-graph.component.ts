@@ -32,10 +32,7 @@ export class TimeGraphComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    console.log(
-      "%cD3 stepped line chart by Saurav Khatiwada , Angular 6 , d3v5",
-      "color: red; font-size :18px"
-    );
+
   }
 
   ngAfterContentInit() {
@@ -81,30 +78,6 @@ export class TimeGraphComponent implements OnInit {
         end_date: "2017-10-12 11:00:00",
         stopType: "Resting",
         duration: "00: 45: 00"
-      },
-      {
-        start_date: "2017-10-12 11:00:00",
-        end_date: "2017-10-15 12:00:00",
-        stopType: "OFF",
-        duration: "01: 00: 00"
-      },
-      {
-        start_date: "2017-10-15 12:00:00",
-        end_date: "2017-10-20 13:00:00",
-        stopType: "Driving",
-        duration: "03: 00: 00"
-      },
-      {
-        start_date: "2017-10-20 13:00:00",
-        end_date: "2017-10-29 14:00:00",
-        stopType: "Break",
-        duration: "00: 30: 00"
-      },
-      {
-        start_date: "2017-10-29 14:00:00",
-        end_date: "2017-11-04 15:00:00",
-        stopType: "Driving",
-        duration: "00: 40: 00"
       }
     ];
 
@@ -145,26 +118,26 @@ export class TimeGraphComponent implements OnInit {
     var mainDivName = mainDiv.substr(1, mainDiv.length);
     var z = d3.scaleOrdinal();
 
-    var legendData = new Set(
-      data.map(function(d) {
-        return d[typeFields];
-      })
-    );
-    this.createLineStepChartLegend(mainDiv, legendData);
+    // var legendData = new Set(
+    //   data.map(function(d) {
+    //     return d[typeFields];
+    //   })
+    // );
+    // this.createLineStepChartLegend(mainDiv, legendData);
     var mainDivWidth = $(mainDiv).width();
     var mainDivHeight = $(mainDiv).height();
     d3.select(mainDiv)
       .append("svg")
       .attr("width", mainDivWidth)
-      .attr("height", mainDivHeight)
+      .attr("height", mainDivHeight+50)
       .append("defs")
       .append("pattern")
       .attr("id", "smallGrid")
-      .attr("width", "8")
-      .attr("height", "8")
+      .attr("width", "10")
+      .attr("height", "19")
       .attr("patternUnits", "userSpaceOnUse")
       .append("path")
-      .attr("d", "M 8 0 L 0 0 0 8")
+      .attr("d", "M 10 0 L 0 0 0 10")
       .attr("fill", "none")
       .attr("stroke", "gray")
       .attr("stroke-width", "0.5");
@@ -173,23 +146,27 @@ export class TimeGraphComponent implements OnInit {
       .append("pattern")
       .attr("id", "grid")
       .attr("width", "80")
-      .attr("height", "80")
+      .attr("height", "1000")
       .attr("patternUnits", "userSpaceOnUse")
       .append("rect")
       .attr("width", "80")
-      .attr("height", "80")
+      .attr("height", "1000")
       .attr("fill", "url(#smallGrid")
       .append("path")
-      .attr("d", "M 80 0 L 0 0 0 80")
+      .attr("d", "M 10 0 L 0 0 0 10")
       .attr("fill", "none")
       .attr("stroke", "gray")
       .attr("stroke-width", "1");
 
     d3.select("svg")
       .append("rect")
-      .attr("width", "1120")
-      .attr("height", "200")
+      .attr("x","40")
+      .attr("y","10")
+      .attr("width", "1080")
+      .attr("height", "230")
       .attr("fill", "url(#grid)");
+
+
     var svg = d3.select(mainDiv + " svg"),
       margin = {
         top: 20,
@@ -200,16 +177,17 @@ export class TimeGraphComponent implements OnInit {
       width = +svg.attr("width") - margin.left - margin.right,
       height = +svg.attr("height") - margin.top - margin.bottom;
 
-    var g = svg
-      .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     var minDateLabelg = svg
       .append("g")
-      .attr("transform", "translate(" + 0 + "," + 19 + ")");
+      .attr("transform", "translate(" + 40 + "," + 19 + ")");
     var maxDateLabelg = svg
       .append("g")
       .attr("transform", "translate(" + -20 + "," + 19 + ")");
+
+    var g = svg
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     data.map(function(d) {
       d[minValueField] = new Date(d[minValueField]);
@@ -233,6 +211,72 @@ export class TimeGraphComponent implements OnInit {
 
     var y = d3.scaleLinear().range([height, 0]);
     y.domain([0, height]);
+
+    var xA = d3.scaleTime()
+                .domain([minValueDate, maxValueDate])
+                 .range([40, width+18]);
+
+    const yA = d3.scaleOrdinal()
+                  .domain(data.map(({stopType}) => stopType))
+                  .range([0,height+58]);
+
+    const xAxis = d3.axisBottom(xA);
+
+
+    const yAxis = d3.axisLeft(yA);
+
+
+
+    svg
+      .append("g")
+      .attr("class","x-axis")
+      .attr("transform","translate(0,0)")
+      .call(xAxis);
+
+
+      //path d attributes changes on x axis
+      svg
+      .selectAll("g")
+      .filter(".x-axis")
+      .select("path")
+      .filter(".domain")
+      .attr("d","M 40.5 6 V 0.5 H 1118.5 V 1");
+
+    var arrayData = [];
+    var tickY = 48;
+
+    svg
+      .append("g")
+      .attr("class","y-axis")
+      .attr("transform","translate(40,0)")
+      .call(yAxis)
+      .selectAll(".tick")
+      .each(function(data){
+          var i = 0;
+          arrayData.push(data);
+          var tick = d3.select(this);
+          for (i;i<arrayData.length;i++){
+          if(data === "OFF"){
+            tick.attr("transform","translate(" + 0 + "," + tickY + ")");
+          }else if (data === "Driving"){
+            tickY = 21 + tickY;
+            tick.attr("transform","translate(" + 5 + "," + tickY + ")");
+          }else if (data === "Resting"){
+            tickY = 20 + tickY;
+            tick.attr("transform","translate(" + 5 + "," + tickY + ")");
+          }else {
+            tickY = 11 + tickY;
+            tick.attr("transform","translate(" + 5 + "," + tickY + ")");
+          }
+        }
+      });
+      //path d attributes changes on y axis
+      svg
+      .selectAll("g")
+      .filter(".y-axis")
+      .select("path")
+      .filter(".domain")
+      .attr("d","M 1 0.5 H 0.5 V 235.5 H 1");
 
     minDateLabelg
       .append("text")
@@ -278,11 +322,13 @@ export class TimeGraphComponent implements OnInit {
       duration: "00: 00: 00"
       */
       if (upLineValue.indexOf(d[typeFields]) != -1) {
+        //only typefields of driving have index value of not equal to -1
         yPos = height / 2;
       } else {
         yPos = height;
+        // here the value of ypos is 140
       }
-      if (i == 0) {
+
         if (d.stopType == "OFF") {
           var startDateValue =
             d[minValueField].getTime() / (1000 * 60) - minValue;
@@ -291,111 +337,87 @@ export class TimeGraphComponent implements OnInit {
           pathg = g
             .append("path")
             .attr("class", "line")
-            .attr("stroke", lineColor)
+            .attr("stroke", "#788c99")
             .attr("stroke-width", "8px")
             .attr(
               "d",
               "M " +
-                x(startDateValue) +
+                x(startDateValue) + 20 +
                 " " +
-                (yPos - 112) +
+                (yPos - 162) +
                 " L " +
                 x(endDateValue) +
                 " " +
-                (yPos - 112)
+                (yPos - 162)
             );
           var width = x(endDateValue) - x(startDateValue);
-          rectg = g
-            .append("rect")
-            .attr("x", "-20")
-            .attr("y", "-20")
-            .attr("width", width + 20)
-            .attr("height", "200")
-            .style("fill", z(d[typeFields]))
-            .style("opacity", "0.3");
           prevX = x(endDateValue);
           prevY = yPos;
+          //yPos value is 140
         }
-      } else {
+
+
         var startDateValue =
-          d[minValueField].getTime() / (1000 * 60) - minValue;
+        d[minValueField].getTime() / (1000 * 60) - minValue;
         var endDateValue = d[maxValueField].getTime() / (1000 * 60) - minValue;
 
+        //here only driving and resting match the (prevY != ypos ) conditon so only they enter the if block below
         if (prevY != yPos) {
           if (d.stopType == "Driving") {
+
             pathg = g
               .append("path")
               .attr("class", "line")
-              .attr("stroke", "#00e640")
+              .attr("stroke", "#788c99")
               .attr("stroke-width", "8px")
               .attr(
                 "d",
                 "M " +
-                  x(startDateValue + 50) +
+                  x(startDateValue + 40) +
                   " " +
-                  yPos +
+                  (yPos-23) +
                   " L " +
-                  x(endDateValue - 50) +
+                  x(endDateValue - 20) +
                   " " +
-                  yPos
+                  (yPos-23)
               );
           } else if ((d.stopType = "Resting")) {
             pathg = g
               .append("path")
               .attr("class", "line")
-              .attr("stroke", "#9933ff")
+              .attr("stroke", "#788c99")
               .attr("stroke-width", "8px")
               .attr(
                 "d",
                 "M " +
                   x(startDateValue + 50) +
                   " " +
-                  (yPos - 8) +
+                  (yPos - 60) +
                   " L " +
                   x(endDateValue - 50) +
                   " " +
-                  (yPos - 8)
+                  (yPos - 60)
               );
           }
         } else if (d.stopType == "Break") {
           pathg = g
             .append("path")
             .attr("class", "line")
-            .attr("stroke", "red")
+            .attr("stroke", "#788c99")
             .attr("stroke-width", "8px")
             .attr(
               "d",
               "M " +
                 x(startDateValue) +
                 " " +
-                (yPos + 30) +
+                (yPos - 15) +
                 " L " +
                 x(endDateValue) +
                 " " +
-                (yPos + 30)
-            );
-        } else {
-          var startDateValue =
-            d[minValueField].getTime() / (1000 * 60) - minValue;
-          var endDateValue =
-            d[maxValueField].getTime() / (1000 * 60) - minValue;
-          pathg = g
-            .append("path")
-            .attr("class", "line")
-            .attr("stroke", lineColor)
-            .attr("stroke-width", "8px")
-            .attr(
-              "d",
-              "M " +
-                x(startDateValue) +
-                " " +
-                (yPos - 112) +
-                " L " +
-                x(endDateValue) +
-                " " +
-                (yPos - 112)
+                (yPos - 15)
             );
         }
+
         var rect2width = x(endDateValue) - x(startDateValue);
         rectg = g
           .append("rect")
@@ -403,12 +425,12 @@ export class TimeGraphComponent implements OnInit {
           .attr("x", x(startDateValue))
           .attr("y", "-20")
           .attr("width", rect2width)
-          .attr("height", "200")
-          .style("fill", z(d[typeFields]))
+          .attr("height", "235")
+          .style("fill", "white")
           .style("opacity", "0.3");
 
         prevY = yPos;
-      }
+
       rectg
         .on("mouseover", () => {
           d3.select("#tooltipDiv").style("top", "20");
@@ -438,29 +460,29 @@ export class TimeGraphComponent implements OnInit {
     }
   }
 
-  createLineStepChartLegend(mainDiv, data) {
-    var z = d3
-      .scaleOrdinal()
-      .domain(["OFF", "Driving", "Resting", "Break"])
-      .range(["#3880aa", "#00e640", "#9933ff", "#ff0000"]);
-    var mainDivName = mainDiv.substr(1, mainDiv.length);
-    $(mainDiv).before(
-      "<div id='Legend_" +
-        mainDivName +
-        "' class='pmd-card-body' style='margin-left:20px; margin-top:0; margin-bottom:0;'></div>"
-    );
-    data.forEach(function(d) {
-      var cloloCode = z(d);
-      $("#Legend_" + mainDivName).append(
-        "<span class='team-graph team1' style='display: inline-block; margin-right:10px;'>\
-                        <span style='background:" +
-          cloloCode +
-          ";width: 10px;height: 10px;display: inline-block;vertical-align: middle;opacity:1 '>&nbsp;</span>\
-                        <span style='padding-top: 0;font-family:Source Sans Pro, sans-serif;font-size: 13px;display: inline;'>" +
-          d +
-          " </span>\
-                        </span>"
-      );
-    });
-  }
+  // createLineStepChartLegend(mainDiv, data) {
+  //   var z = d3
+  //     .scaleOrdinal()
+  //     .domain(["OFF", "Driving", "Resting", "Break"])
+  //     .range(["#3880aa", "#00e640", "#9933ff", "#ff0000"]);
+  //   var mainDivName = mainDiv.substr(1, mainDiv.length);
+  //   $(mainDiv).before(
+  //     "<div id='Legend_" +
+  //       mainDivName +
+  //       "' class='pmd-card-body' style='margin-left:20px; margin-top:0; margin-bottom:0;'></div>"
+  //   );
+  //   data.forEach(function(d) {
+  //     var cloloCode = z(d);
+  //     $("#Legend_" + mainDivName).append(
+  //       "<span class='team-graph team1' style='display: inline-block; margin-right:10px;'>\
+  //                       <span style='background:" +
+  //         cloloCode +
+  //         ";width: 10px;height: 10px;display: inline-block;vertical-align: middle;opacity:1 '>&nbsp;</span>\
+  //                       <span style='padding-top: 0;font-family:Source Sans Pro, sans-serif;font-size: 13px;display: inline;'>" +
+  //         d +
+  //         " </span>\
+  //                       </span>"
+  //     );
+  //   });
+  // }
 }
