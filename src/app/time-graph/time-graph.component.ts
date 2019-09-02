@@ -1,61 +1,59 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import * as d3 from "d3";
 
 declare let $: any;
 @Component({
-  selector: 'app-graph',
+  selector: "app-graph",
   templateUrl: "./time-graph.component.html",
   styles: []
 })
 export class TimeGraphComponent implements OnInit {
-
   data = [
     {
-      "dimensionCheck": true,
-      "endTime": "2019-08-29T22:16:03.000Z",
-      "time": "2019-08-29T18:15:00.000Z",
-      "stopstype": "resting",
-      "duration": "04:01:03"
+      dimensionCheck: true,
+      endTime: "2019-08-29T22:16:03.000Z",
+      time: "2019-08-29T18:15:00.000Z",
+      stopstype: "resting",
+      duration: "04:01:03"
     },
     {
-      "dimensionCheck": false,
-      "endTime": "2019-08-30T02:47:58.978Z",
-      "time": "2019-08-29T22:16:03.000Z",
-      "stopstype": "working",
-      "duration": "04:31:55"
+      dimensionCheck: false,
+      endTime: "2019-08-30T02:47:58.978Z",
+      time: "2019-08-29T22:16:03.000Z",
+      stopstype: "working",
+      duration: "04:31:55"
     },
     {
-      "dimensionCheck": false,
-      "endTime": "2019-08-30T03:51:17.742Z",
-      "time": "2019-08-30T02:47:58.978Z",
-      "stopstype": "break",
-      "duration": "01:03:18"
+      dimensionCheck: false,
+      endTime: "2019-08-30T03:51:17.742Z",
+      time: "2019-08-30T02:47:58.978Z",
+      stopstype: "break",
+      duration: "01:03:18"
     },
     {
-      "dimensionCheck": true,
-      "endTime": "2019-08-30T08:23:56.000Z",
-      "time": "2019-08-30T03:51:17.742Z",
-      "stopstype": "working",
-      "duration": "04:32:38"
+      dimensionCheck: true,
+      endTime: "2019-08-30T08:23:56.000Z",
+      time: "2019-08-30T03:51:17.742Z",
+      stopstype: "working",
+      duration: "04:32:38"
     },
     {
-      "dimensionCheck": false,
-      "endTime": "2019-08-30T18:14:00.000Z",
-      "time": "2019-08-30T08:23:56.000Z",
-      "stopstype": "resting",
-      "duration": "09:50:04"
+      dimensionCheck: false,
+      endTime: "2019-08-30T18:14:00.000Z",
+      time: "2019-08-30T08:23:56.000Z",
+      stopstype: "resting",
+      duration: "09:50:04"
     }
-  ]
-  id = 1
+  ];
+  id = 1;
   stopsCount: number = 2;
   totalStopsData?: any;
   maxDateBoolean?: boolean = false;
   totalStopHours = [];
-  stopTypes = ['WORKING', 'BREAK', 'RESTING'];
+  stopTypes = ["WORKING", "BREAK", "RESTING"];
   totalTime;
 
   helpers = {
-
     getDimensions: function (id) {
       let el: any = document.getElementById(id);
       let w = 1,
@@ -77,20 +75,14 @@ export class TimeGraphComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-
-
-    this.data = this.data.filter(
-      v => {
-        return (v.endTime);
-      }
-    )
-    this.data.forEach(
-      v => {
-        v['stopType'] = v['stopstype'];
-        v['start_date'] = new Date(v.time);
-        v['end_date'] = new Date(v.endTime);
-      }
-    )
+    this.data = this.data.filter(v => {
+      return v.endTime;
+    });
+    this.data.forEach(v => {
+      v["stopType"] = v["stopstype"];
+      v["start_date"] = new Date(v.time);
+      v["end_date"] = new Date(v.endTime);
+    });
     this.totalStopsData = this.data[0];
 
     // if (this.totalStopsData) {
@@ -107,9 +99,9 @@ export class TimeGraphComponent implements OnInit {
   ngAfterContentInit() {
     let data = this.data;
     setTimeout(value => {
-      $('#chart' + this.id).empty();
+      $("#chart" + this.id).empty();
       let chartConfig = {
-        mainDiv: '#chart' + this.id,
+        mainDiv: "#chart" + this.id,
         data: data,
         lineColor: " #3880aa",
         upLineValue: ["working"],
@@ -120,7 +112,6 @@ export class TimeGraphComponent implements OnInit {
         dimensionCheck: "dimensionCheck"
       };
       let lineStepCharts = this.lineStepChart(chartConfig);
-
     }, 1000);
 
     // let totalStops;
@@ -141,7 +132,6 @@ export class TimeGraphComponent implements OnInit {
     setReSizeEvent(config);
   }
 
-
   drawLineStepsChart(config) {
     let data = config.data;
     let lineColor = config.lineColor;
@@ -155,7 +145,6 @@ export class TimeGraphComponent implements OnInit {
     let mainDivName = mainDiv.substr(1, mainDiv.length);
     let z = d3.scaleOrdinal();
 
-
     let mainDivWidth = $(mainDiv).width();
     let mainDivHeight = $(mainDiv).height();
     // let height1 = +svg.attr("height") - margin.top - margin.bottom;
@@ -164,17 +153,16 @@ export class TimeGraphComponent implements OnInit {
      let zipped = this.stopTypes.map((x, i) => [x, this.totalStopHours[i]]);
      console.log(zipped); */
 
-    const yB = d3.scaleOrdinal()
+    const yB = d3
+      .scaleOrdinal()
       .domain(this.totalStopHours)
       .range([0, 133]);
 
     const yAxis1 = d3.axisRight(yB);
 
-
-
     d3.select(mainDiv)
       .append("svg")
-      .attr("id", 'svg' + this.id)
+      .attr("id", "svg" + this.id)
       .attr("width", 800)
       .attr("height", 135)
       .style("margin-left", "22px")
@@ -207,8 +195,7 @@ export class TimeGraphComponent implements OnInit {
       .attr("stroke", "gray")
       .attr("stroke-width", "1");
 
-
-    d3.select('#svg' + this.id)
+    d3.select("#svg" + this.id)
       .append("rect")
       .attr("x", "60")
       .attr("y", "30")
@@ -216,13 +203,13 @@ export class TimeGraphComponent implements OnInit {
       .attr("height", "91")
       .attr("fill", "url(#smallGrid)");
 
-    let border_size = "1px"
+    let border_size = "1px";
     if (this.totalStopsData) {
       d3.select(mainDiv)
         .append("svg")
-        .attr("id", 'totalTime' + this.id)
-        .attr("height", '135')
-        .attr("width", '100')
+        .attr("id", "totalTime" + this.id)
+        .attr("height", "135")
+        .attr("width", "100")
         .style("display", "inline-block")
         .style("margin-left", "10px")
         // .style("border-top","1px solid #575962")
@@ -232,11 +219,10 @@ export class TimeGraphComponent implements OnInit {
         .attr("id", "g" + this.id)
         .append("rect")
         .style("fill", "white")
-        .attr("height", '15')
-        .attr("width", '100')
+        .attr("height", "15")
+        .attr("width", "100")
         .attr("x", "0")
-        .attr("y", '1')
-
+        .attr("y", "1");
 
       // d3.select("#g" + this.id)
       //   .append("text")
@@ -263,7 +249,6 @@ export class TimeGraphComponent implements OnInit {
           if (index === 0) {
             let tickY = 42;
             tick.attr("transform", "translate(" + 0 + "," + tickY + ")");
-
           }
           if (index === 1) {
             let tickY = 70;
@@ -317,62 +302,63 @@ export class TimeGraphComponent implements OnInit {
     let stopsUnique = data.forEach(datas => {
       if (uniqueStopType.includes(datas.stopType)) {
       } else {
-        uniqueStopType.push(datas.stopType)
+        uniqueStopType.push(datas.stopType);
       }
-    })
+    });
 
     let minDateLabelg = svg
       .append("g")
       .attr("transform", "translate(" + 62 + "," + 18 + ")");
-    let maxDateLabelg
+    let maxDateLabelg;
     if (this.maxDateBoolean == false) {
       maxDateLabelg = svg
         .append("g")
-        .attr("transform", "translate(" + (-174) + "," + 18 + ")");
+        .attr("transform", "translate(" + -174 + "," + 18 + ")");
     } else {
       maxDateLabelg = svg
         .append("g")
-        .attr("transform", "translate(" + (-259) + "," + 18 + ")");
+        .attr("transform", "translate(" + -259 + "," + 18 + ")");
     }
     //-150
 
     let g = svg
       .append("g")
-      .attr("transform", "translate(" + (margin.left + 30) + "," + margin.top + ")");
+      .attr(
+        "transform",
+        "translate(" + (margin.left + 30) + "," + margin.top + ")"
+      );
 
     for (let d of this.data) {
       if (this.stopsCount > 0) {
-        let star = d3.select(mainDiv)
+        let star = d3
+          .select(mainDiv)
           .append("svg")
-          .attr("id", 'star' + this.id)
-          .attr("height", '30')
-          .attr("weight", '50')
-          .attr("id", 'star' + this.id)
+          .attr("id", "star" + this.id)
+          .attr("height", "30")
+          .attr("weight", "50")
+          .attr("id", "star" + this.id)
           .append("polygon")
           .attr("points", "7,3 4,12 11,6 3,6 10,12")
           .attr("fill", "red")
           .attr("transform", "translate(95,8)");
 
-        let text = d3.select('#star' + this.id)
+        let text = d3
+          .select("#star" + this.id)
           .append("text")
           .style("font-weight", "bold")
           .text(this.stopsCount + " Dimensional Checks")
           .attr("transform", "translate(110,19)")
-          .attr("font-size", '0.7rem');
+          .attr("font-size", "0.7rem");
         break;
       }
     }
-
-
-
 
     data.map(function (d) {
       d[minValueField] = d[minValueField];
       d[maxValueField] = d[maxValueField];
       d[dimensionCheck] = d[dimensionCheck];
       // d[dimensionCheck] = d[dimensionCheck];
-    }
-    );
+    });
     let minValueDate = d3.min(data, function (d) {
       //here we get the start_date
       return d[minValueField];
@@ -394,32 +380,31 @@ export class TimeGraphComponent implements OnInit {
 
     let endTime = new Date(minValueDate);
     endTime.setHours(23, 59, 59, 999);
-    let xA = d3.scaleTime()
+    let xA = d3
+      .scaleTime()
       .domain([minValueDate, endTime])
       .range([40, width + 18]);
 
-    const yA = d3.scaleOrdinal()
-      .domain(data.map(({ stopType }) => {
-        return stopType.toUpperCase()
-      }))
+    const yA = d3
+      .scaleOrdinal()
+      .domain(
+        data.map(({ stopType }) => {
+          return stopType.toUpperCase();
+        })
+      )
       .range([0, height]);
-
 
     // const xAxis = d3.axisBottom(xA);
     const xAxis = d3.axisBottom(xA).tickArguments([d3.timeHour.every(2)]);
 
-    const stopsTick = d3.scaleOrdinal()
+    const stopsTick = d3
+      .scaleOrdinal()
       .domain(this.stopTypes)
       .range([0, height]);
-
 
     const yAxis = d3.axisLeft(yA);
     const yAxis2 = d3.axisRight(yA);
     const stopAxis = d3.axisLeft(stopsTick);
-
-
-
-
 
     svg
       .append("g")
@@ -522,9 +507,7 @@ export class TimeGraphComponent implements OnInit {
 
     let self = this;
 
-
     data.map(function (d, i) {
-
       // console.log(d);
       // debugger;
       if (upLineValue.indexOf(d[typeFields]) != -1) {
@@ -532,15 +515,15 @@ export class TimeGraphComponent implements OnInit {
         yPos = yPos - 10;
       } else {
         if (d[typeFields] == "break") {
-          yPos = height - 19.5
+          yPos = height - 19.5;
         } else {
           yPos = height + 10;
         }
       }
 
-
       if (i == 0) {
-        let startDateValue = d[minValueField].getTime() / (1000 * 60) - minValue;
+        let startDateValue =
+          d[minValueField].getTime() / (1000 * 60) - minValue;
         let endDateValue = d[maxValueField].getTime() / (1000 * 60) - minValue;
         pathg = g
           .append("path")
@@ -559,9 +542,8 @@ export class TimeGraphComponent implements OnInit {
             yPos
           );
         if (d.dimensionCheck == true) {
-          let endDateTime = new Date(d['endTime']);
+          let endDateTime = new Date(d["endTime"]);
           let endDateTime1 = endDateTime.getTime() / (1000 * 60) - minValue;
-
 
           let polygonTime = x(endDateTime1);
 
@@ -569,7 +551,10 @@ export class TimeGraphComponent implements OnInit {
             .append("polygon")
             .attr("points", "7,3 4,12 11,6 3,6 10,12")
             .attr("fill", "red")
-            .attr("transform", "translate(" + (polygonTime - 10) + "," + (yPos - 9) + ")");
+            .attr(
+              "transform",
+              "translate(" + (polygonTime - 10) + "," + (yPos - 9) + ")"
+            );
         }
         let rectangeWidth = x(endDateValue) - x(startDateValue);
         rectg = g
@@ -583,14 +568,13 @@ export class TimeGraphComponent implements OnInit {
 
         prevX = x(endDateValue);
         prevY = yPos;
-      }
-      else {
-        let startDateValue = d[minValueField].getTime() / (1000 * 60) - minValue;
+      } else {
+        let startDateValue =
+          d[minValueField].getTime() / (1000 * 60) - minValue;
         let endDateValue = d[maxValueField].getTime() / (1000 * 60) - minValue;
 
         if (prevY != yPos) {
-          g
-            .append("path")
+          g.append("path")
             .attr("class", "line")
             .attr("stroke", lineColor)
             .attr("stroke-width", "1px")
@@ -623,18 +607,20 @@ export class TimeGraphComponent implements OnInit {
               yPos
             );
           if (d.dimensionCheck == true) {
-            let endDateTime = new Date(d['endTime']);
+            let endDateTime = new Date(d["endTime"]);
             let endDateTime1 = endDateTime.getTime() / (1000 * 60) - minValue;
 
             let polygonTime = x(endDateTime1);
             let stopType = d[minValueField];
 
-
             pathg = g
               .append("polygon")
               .attr("points", "7,3 4,12 11,6 3,6 10,12")
               .attr("fill", "red")
-              .attr("transform", "translate(" + (polygonTime - 10) + "," + (yPos - 9) + ")");
+              .attr(
+                "transform",
+                "translate(" + (polygonTime - 10) + "," + (yPos - 9) + ")"
+              );
           }
         } else {
           pathg = g
@@ -654,20 +640,22 @@ export class TimeGraphComponent implements OnInit {
               yPos
             );
           if (d.dimensionCheck == true) {
-            let endDateTime = new Date(d['endTime']);
+            let endDateTime = new Date(d["endTime"]);
             let endDateTime1 = endDateTime.getTime() / (1000 * 60) - minValue;
             let polygonTime = x(endDateTime1);
             let stopType = d[minValueField];
-
 
             pathg = g
               .append("polygon")
               .attr("points", "7,3 4,12 11,6 3,6 10,12")
               .attr("fill", "red")
-              .attr("transform", "translate(" + (polygonTime - 10) + "," + (yPos - 9) + ")");
+              .attr(
+                "transform",
+                "translate(" + (polygonTime - 10) + "," + (yPos - 9) + ")"
+              );
           }
         }
-        let rectangle2Width = (x(endDateValue) - x(startDateValue));
+        let rectangle2Width = x(endDateValue) - x(startDateValue);
         rectg = g
           .append("rect")
           .attr("class", "rectBackground")
@@ -681,31 +669,34 @@ export class TimeGraphComponent implements OnInit {
       }
       rectg
         .on("mouseover", () => {
-          d3.select('#tooltipDiv' + self.id).style("top", "20");
-          d3.select('#tooltipDiv' + self.id).style("display", null);
-          d3.select('#tooltipDiv' + self.id).style("left");
+          d3.select("#tooltipDiv" + self.id).style("top", "20");
+          d3.select("#tooltipDiv" + self.id).style("display", null);
+          d3.select("#tooltipDiv" + self.id).style("left");
         })
-        .on("mouseout", () => d3.select('#tooltipDiv' + self.id).style("display", "none"))
+        .on("mouseout", () =>
+          d3.select("#tooltipDiv" + self.id).style("display", "none")
+        )
         .on("mousemove", () => mousemove(self, d));
     });
 
     function mousemove(e, data) {
       if (d3.event) {
-        $('#tooltipDiv' + self.id).css({
+        $("#tooltipDiv" + self.id).css({
           left: d3.event.pageX - 10,
           top: d3.event.pageY + 15
         });
-        d3.select('#startDate' + self.id).html(
+        d3.select("#startDate" + self.id).html(
           "Start Date:" +
           d3.timeFormat("%Y-%m-%d %H:%M:%S")(data[minValueField])
         );
-        d3.select('#endDate' + self.id).html(
+        d3.select("#endDate" + self.id).html(
           "End Date:" + d3.timeFormat("%Y-%m-%d %H:%M:%S")(data[maxValueField])
         );
-        d3.select('#processType' + self.id).html("Process Type:" + data[typeFields]);
+        d3.select("#processType" + self.id).html(
+          "Process Type:" + data[typeFields]
+        );
       }
     }
-
   }
 
   /*
@@ -746,6 +737,4 @@ export class TimeGraphComponent implements OnInit {
       return str;
   }
 */
-
-
 }
