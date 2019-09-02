@@ -8,6 +8,15 @@ declare let $: any;
   styles: []
 })
 export class TimeGraphComponent implements OnInit {
+
+  //no service shall be injected today
+  //thus no service is passed to the constructor hahaha 
+  //but if you like you can pass the http injector for api call if you are modest go for axios.
+  //the data should exactly be this format for the component to run, the backup of this data is in data/data.json feel free to modify the code and enjoy.
+
+  constructor() { }
+
+
   data = [
     {
       dimensionCheck: true,
@@ -43,8 +52,8 @@ export class TimeGraphComponent implements OnInit {
       time: "2019-08-30T08:23:56.000Z",
       stopstype: "resting",
       duration: "09:50:04"
-    }
-  ];
+    }];
+
   id = 1;
   stopsCount: number = 2;
   totalStopsData?: any;
@@ -72,7 +81,6 @@ export class TimeGraphComponent implements OnInit {
     }
   };
 
-  constructor() { }
 
   ngOnInit() {
     this.data = this.data.filter(v => {

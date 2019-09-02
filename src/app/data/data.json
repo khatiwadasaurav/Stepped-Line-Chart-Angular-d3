@@ -1,20 +1,36 @@
 [
   {
-    "start_date": "2017-09-04 05:00:00",
-    "end_date": "2017-09-04 06:00:00",
-    "stopType": "resting",
-    "duration": "01: 00: 00"
+    "dimensionCheck": true,
+    "endTime": "2019-08-29T22:16:03.000Z",
+    "time": "2019-08-29T18:15:00.000Z",
+    "stopstype": "resting",
+    "duration": "04:01:03"
   },
   {
-    "start_date": "2017-09-04 06:00:00",
-    "end_date": "2017-09-04 10:00:00",
-    "stopType": "working",
-    "duration": "04: 00: 00"
+    "dimensionCheck": false,
+    "endTime": "2019-08-30T02:47:58.978Z",
+    "time": "2019-08-29T22:16:03.000Z",
+    "stopstype": "working",
+    "duration": "04:31:55"
   },
   {
-    "start_date": "2017-09-04 10:00:00",
-    "end_date": "2017-09-04 10:20:00",
-    "stopType": "break",
-    "duration": "00: 20: 00"
-  }
-]
+    "dimensionCheck": false,
+    "endTime": "2019-08-30T03:51:17.742Z",
+    "time": "2019-08-30T02:47:58.978Z",
+    "stopstype": "break",
+    "duration": "01:03:18"
+  },
+  {
+    "dimensionCheck": true,
+    "endTime": "2019-08-30T08:23:56.000Z",
+    "time": "2019-08-30T03:51:17.742Z",
+    "stopstype": "working",
+    "duration": "04:32:38"
+  },
+  {
+    "dimensionCheck": false,
+    "endTime": "2019-08-30T18:14:00.000Z",
+    "time": "2019-08-30T08:23:56.000Z",
+    "stopstype": "resting",
+    "duration": "09:50:04"
+  }];
