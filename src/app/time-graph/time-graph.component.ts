@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 import * as d3 from "d3";
 
-declare var $: any;
+declare let $: any;
 @Component({
   selector: 'app-graph',
   templateUrl: "./time-graph.component.html",
@@ -57,11 +57,11 @@ export class TimeGraphComponent implements OnInit {
   helpers = {
 
     getDimensions: function (id) {
-      var el: any = document.getElementById(id);
-      var w = 1,
+      let el: any = document.getElementById(id);
+      let w = 1,
         h = 1;
       if (el) {
-        var dimensions = el.getBBox();
+        let dimensions = el.getBBox();
         w = dimensions.width;
         h = dimensions.height;
       } else {
@@ -108,7 +108,7 @@ export class TimeGraphComponent implements OnInit {
     let data = this.data;
     setTimeout(value => {
       $('#chart' + this.id).empty();
-      var chartConfig = {
+      let chartConfig = {
         mainDiv: '#chart' + this.id,
         data: data,
         lineColor: " #3880aa",
@@ -119,7 +119,7 @@ export class TimeGraphComponent implements OnInit {
         duration: "duration",
         dimensionCheck: "dimensionCheck"
       };
-      var lineStepCharts = this.lineStepChart(chartConfig);
+      let lineStepCharts = this.lineStepChart(chartConfig);
 
     }, 1000);
 
@@ -133,8 +133,8 @@ export class TimeGraphComponent implements OnInit {
 
   lineStepChart(config) {
     function setReSizeEvent(data) {
-      var resizeTimer;
-      var interval = 500;
+      let resizeTimer;
+      let interval = 500;
       window.removeEventListener("resize", function () { });
     }
     this.drawLineStepsChart(config);
@@ -143,27 +143,21 @@ export class TimeGraphComponent implements OnInit {
 
 
   drawLineStepsChart(config) {
-    var data = config.data;
-    var lineColor = config.lineColor;
-    var upLineValue = config.upLineValue;
-    var typeFields = config.typeFields;
-    var mainDiv = config.mainDiv;
-    var minValueField = config.minValueField;
-    var maxValueField = config.maxValueField;
-    // var maxValueField = config.maxValueField;
-    var duration = config.duration;
-    var dimensionCheck = config.dimensionCheck;
-    var mainDivName = mainDiv.substr(1, mainDiv.length);
-    var z = d3.scaleOrdinal();
+    let data = config.data;
+    let lineColor = config.lineColor;
+    let upLineValue = config.upLineValue;
+    let typeFields = config.typeFields;
+    let mainDiv = config.mainDiv;
+    let minValueField = config.minValueField;
+    let maxValueField = config.maxValueField;
+    let duration = config.duration;
+    let dimensionCheck = config.dimensionCheck;
+    let mainDivName = mainDiv.substr(1, mainDiv.length);
+    let z = d3.scaleOrdinal();
 
-    // var legendData = new Set(
-    //   data.map(function(d) {
-    //     return d[typeFields];
-    //   })
-    // );
-    // this.createLineStepChartLegend(mainDiv, legendData);
-    var mainDivWidth = $(mainDiv).width();
-    var mainDivHeight = $(mainDiv).height();
+
+    let mainDivWidth = $(mainDiv).width();
+    let mainDivHeight = $(mainDiv).height();
     // let height1 = +svg.attr("height") - margin.top - margin.bottom;
 
     /* here i am zipping two arrays may need for future implementation
@@ -265,18 +259,18 @@ export class TimeGraphComponent implements OnInit {
         .call(yAxis1)
         .selectAll(".tick")
         .each(function (data, index) {
-          var tick = d3.select(this);
+          let tick = d3.select(this);
           if (index === 0) {
-            var tickY = 42;
+            let tickY = 42;
             tick.attr("transform", "translate(" + 0 + "," + tickY + ")");
 
           }
           if (index === 1) {
-            var tickY = 70;
+            let tickY = 70;
             tick.attr("transform", "translate(" + 0 + "," + tickY + ")");
           }
           if (index === 2) {
-            var tickY = 100;
+            let tickY = 100;
             tick.attr("transform", "translate(" + 0 + "," + tickY + ")");
           }
           // return data;
@@ -309,7 +303,7 @@ export class TimeGraphComponent implements OnInit {
         .text(this.totalTime);
     */
 
-    var svg = d3.select(mainDiv + " svg"),
+    let svg = d3.select(mainDiv + " svg"),
       margin = {
         top: 20,
         right: 20,
@@ -320,34 +314,35 @@ export class TimeGraphComponent implements OnInit {
       height = +svg.attr("height") - margin.top - margin.bottom;
 
     let uniqueStopType = [];
-    var stopsUnique = data.forEach(datas => {
+    let stopsUnique = data.forEach(datas => {
       if (uniqueStopType.includes(datas.stopType)) {
       } else {
         uniqueStopType.push(datas.stopType)
       }
     })
 
-    var minDateLabelg = svg
+    let minDateLabelg = svg
       .append("g")
       .attr("transform", "translate(" + 62 + "," + 18 + ")");
+    let maxDateLabelg
     if (this.maxDateBoolean == false) {
-      var maxDateLabelg = svg
+      maxDateLabelg = svg
         .append("g")
         .attr("transform", "translate(" + (-174) + "," + 18 + ")");
     } else {
-      var maxDateLabelg = svg
+      maxDateLabelg = svg
         .append("g")
         .attr("transform", "translate(" + (-259) + "," + 18 + ")");
     }
     //-150
 
-    var g = svg
+    let g = svg
       .append("g")
       .attr("transform", "translate(" + (margin.left + 30) + "," + margin.top + ")");
 
     for (let d of this.data) {
       if (this.stopsCount > 0) {
-        var star = d3.select(mainDiv)
+        let star = d3.select(mainDiv)
           .append("svg")
           .attr("id", 'star' + this.id)
           .attr("height", '30')
@@ -358,7 +353,7 @@ export class TimeGraphComponent implements OnInit {
           .attr("fill", "red")
           .attr("transform", "translate(95,8)");
 
-        var text = d3.select('#star' + this.id)
+        let text = d3.select('#star' + this.id)
           .append("text")
           .style("font-weight", "bold")
           .text(this.stopsCount + " Dimensional Checks")
@@ -378,28 +373,28 @@ export class TimeGraphComponent implements OnInit {
       // d[dimensionCheck] = d[dimensionCheck];
     }
     );
-    var minValueDate = d3.min(data, function (d) {
+    let minValueDate = d3.min(data, function (d) {
       //here we get the start_date
       return d[minValueField];
     });
 
-    var maxValueDate = d3.max(data, function (d) {
+    let maxValueDate = d3.max(data, function (d) {
       //here we get the end_date
       return d[maxValueField];
     });
 
-    var minValue = new Date(minValueDate).getTime() / (1000 * 60);
-    var maxValue = new Date(maxValueDate).getTime() / (1000 * 60);
-    var diffInMinutes = maxValue - minValue;
-    var x = d3.scaleLinear().range([0, width]);
+    let minValue = new Date(minValueDate).getTime() / (1000 * 60);
+    let maxValue = new Date(maxValueDate).getTime() / (1000 * 60);
+    let diffInMinutes = maxValue - minValue;
+    let x = d3.scaleLinear().range([0, width]);
     x.domain([0, diffInMinutes]);
 
-    var y = d3.scaleLinear().range([height, 0]);
+    let y = d3.scaleLinear().range([height, 0]);
     y.domain([0, height]);
 
-    var endTime = new Date(minValueDate);
+    let endTime = new Date(minValueDate);
     endTime.setHours(23, 59, 59, 999);
-    var xA = d3.scaleTime()
+    let xA = d3.scaleTime()
       .domain([minValueDate, endTime])
       .range([40, width + 18]);
 
@@ -448,8 +443,8 @@ export class TimeGraphComponent implements OnInit {
       .filter(".domain")
       .attr("d", "M 40.5 6 V 0.5 H 790 V 1");
 
-    var arrayData = [];
-    var tickY = 48;
+    let arrayData = [];
+    let tickY = 48;
 
     svg
       .append("g")
@@ -462,20 +457,20 @@ export class TimeGraphComponent implements OnInit {
       .call(stopAxis)
       .selectAll(".tick")
       .each(function (data) {
-        var i = 0;
+        let i = 0;
         arrayData.push(data);
-        var tick = d3.select(this);
+        let tick = d3.select(this);
 
         if (data.toLowerCase() === "working") {
-          var tickY = 46;
+          let tickY = 46;
           tick.attr("transform", "translate(" + 0 + "," + tickY + ")");
         }
         if (data.toLowerCase() === "resting") {
-          var tickY = 105;
+          let tickY = 105;
           tick.attr("transform", "translate(" + 0 + "," + tickY + ")");
         }
         if (data.toLowerCase() === "break") {
-          var tickY = 75;
+          let tickY = 75;
           tick.attr("transform", "translate(" + 0 + "," + tickY + ")");
         }
       });
@@ -513,17 +508,17 @@ export class TimeGraphComponent implements OnInit {
       .text(d3.timeFormat("%Y-%m-%d %H:%M:%S")(maxValueDate));
     $("#textmaxDateLabelg").css({ "z-index": -1 });
 
-    var dims = this.helpers.getDimensions("textmaxDateLabelg");
+    let dims = this.helpers.getDimensions("textmaxDateLabelg");
     d3.selectAll("#textmaxDateLabelg tspan").attr(
       "x",
       $(mainDiv).width() - dims.w
     );
 
-    var prevX = 0;
-    var prevY = 0;
-    var yPos = 1;
-    var pathg: any;
-    var rectg: any;
+    let prevX = 0;
+    let prevY = 0;
+    let yPos = 1;
+    let pathg: any;
+    let rectg: any;
 
     let self = this;
 
@@ -543,16 +538,10 @@ export class TimeGraphComponent implements OnInit {
         }
       }
 
-      // if(d[typeFields] == "working"){
-      //     yPos = 85
-      // }else if (d[typeFields] == "break"){
-      //    yPos = 27.5
-      // }else{
-      //     yPos = 53.5
-      // }
+
       if (i == 0) {
-        var startDateValue = d[minValueField].getTime() / (1000 * 60) - minValue;
-        var endDateValue = d[maxValueField].getTime() / (1000 * 60) - minValue;
+        let startDateValue = d[minValueField].getTime() / (1000 * 60) - minValue;
+        let endDateValue = d[maxValueField].getTime() / (1000 * 60) - minValue;
         pathg = g
           .append("path")
           .attr("class", "line")
@@ -570,11 +559,11 @@ export class TimeGraphComponent implements OnInit {
             yPos
           );
         if (d.dimensionCheck == true) {
-          var endDateTime = new Date(d['endTime']);
-          var endDateTime1 = endDateTime.getTime() / (1000 * 60) - minValue;
+          let endDateTime = new Date(d['endTime']);
+          let endDateTime1 = endDateTime.getTime() / (1000 * 60) - minValue;
 
 
-          var polygonTime = x(endDateTime1);
+          let polygonTime = x(endDateTime1);
 
           pathg = g
             .append("polygon")
@@ -596,8 +585,8 @@ export class TimeGraphComponent implements OnInit {
         prevY = yPos;
       }
       else {
-        var startDateValue = d[minValueField].getTime() / (1000 * 60) - minValue;
-        var endDateValue = d[maxValueField].getTime() / (1000 * 60) - minValue;
+        let startDateValue = d[minValueField].getTime() / (1000 * 60) - minValue;
+        let endDateValue = d[maxValueField].getTime() / (1000 * 60) - minValue;
 
         if (prevY != yPos) {
           g
@@ -634,11 +623,11 @@ export class TimeGraphComponent implements OnInit {
               yPos
             );
           if (d.dimensionCheck == true) {
-            var endDateTime = new Date(d['endTime']);
-            var endDateTime1 = endDateTime.getTime() / (1000 * 60) - minValue;
+            let endDateTime = new Date(d['endTime']);
+            let endDateTime1 = endDateTime.getTime() / (1000 * 60) - minValue;
 
-            var polygonTime = x(endDateTime1);
-            var stopType = d[minValueField];
+            let polygonTime = x(endDateTime1);
+            let stopType = d[minValueField];
 
 
             pathg = g
@@ -665,10 +654,10 @@ export class TimeGraphComponent implements OnInit {
               yPos
             );
           if (d.dimensionCheck == true) {
-            var endDateTime = new Date(d['endTime']);
-            var endDateTime1 = endDateTime.getTime() / (1000 * 60) - minValue;
-            var polygonTime = x(endDateTime1);
-            var stopType = d[minValueField];
+            let endDateTime = new Date(d['endTime']);
+            let endDateTime1 = endDateTime.getTime() / (1000 * 60) - minValue;
+            let polygonTime = x(endDateTime1);
+            let stopType = d[minValueField];
 
 
             pathg = g
@@ -722,9 +711,9 @@ export class TimeGraphComponent implements OnInit {
   /*
   THESE FUNCTIONS ARE USED FOR CALCULATING TOTAL TIME FROM AN ARRAY OF TIME FORMAT SHOULD BE 00:00:00
   addTimes (startTime) {
-      var totals = startTime.reduce(function (a, timeString){
-          var parts = timeString.split(':');
-          var temp;
+      let totals = startTime.reduce(function (a, timeString){
+          let parts = timeString.split(':');
+          let temp;
           if (parts.length > 0 && a) {
               temp = Number(parts.pop()) + a.seconds;
               a.seconds = temp % 60;
@@ -750,7 +739,7 @@ export class TimeGraphComponent implements OnInit {
       ].join(':');
   }
   zeroPad(num) {
-      var str = String(num);
+      let str = String(num);
       if (str.length < 2) {
           return '0' + str;
       }
