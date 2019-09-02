@@ -1,11 +1,16 @@
-<div id="chart"  style="width: 800;height: 200px;">
-</div>
-<div id="tooltipDiv" style="display:none;background:#3880aa;opacity:1;position: absolute;padding: 10px; border: 1px solid white;color : whitesmoke;">
+<div>
+  <div class="container-fluid" [attr.id]="'chart'+id"
+    style="width: 1000px;height: 150px; margin-bottom: 10px; margin-top: 30px;">
 
-    <div id="startDate"></div>
-    <div id="endDate"></div>
-    <div id="processType"></div>
-    <!-- <div id="duration"></div> -->
+  </div>
+</div>
+<div [attr.id]="'tooltipDiv'+id"
+  style="display:none;background:#3880aa;opacity:1;position: absolute;padding: 10px; border: 1px solid white;color : whitesmoke;">
+
+  <div [attr.id]="'startDate'+id"></div>
+  <div [attr.id]="'endDate'+id"></div>
+  <div [attr.id]="'processType'+id"></div>
+  <!-- <div id="duration"></div> -->
 </div>
 
 <table>
